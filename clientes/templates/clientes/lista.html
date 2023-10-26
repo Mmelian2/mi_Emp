@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Listado clientes{% endblock %}
+
+{% block content %}
+<div class="p-3 mb-2 bg-secondary text-white">
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-4">Clientes</h1>
+      <!-- It will show the total clientes count -->
+      <p class="lead">Total de clientes - {{ clientes.paginator.count }}</p>
+    </div>
+  </div>
+  <div class="container">
+    <table class="table table-dark table-bordered border-primary">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">DNI</th>
+            <th scope="col">Rubro</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.nombre }} </td>
+                    <td>{{ cliente.apellido }}</td>
+                    <td>{{ cliente.dni }}</td>
+                    <td>{{ cliente.rubro }}</td>
+                    <td>
+                      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                        <form method="POST" action="{% url 'eliminar_cliente' cliente.id %}">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-danger " title="Elimación Directa de cliente">Eliminar</button>
+                        </form>
+                        <a type="a" class="btn btn-warning" href="{%url 'editar_cliente' cliente.id%}">Editar</a>
+                        <a type="a" class="btn btn-success" href="{%url 'cliente_info' cliente.id%}">info</a>
+                      </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- pagination starts -->
+      <nav aria-label="...">
+        <ul class="pagination flex-wrap justify-content-center">
+          <li class="page-item disabled">
+            {% if clientes.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="{{ request.path }}?page={{ clientes.previous_page_number }}">⇇</a>
+              </li>
+            {% endif %}
+            {% if clientes.number > 3 %}
+              <li class="page-item">
+                <a class="page-link" href="{{ request.path }}?page=1">1</a>
+              </li>
+            {% endif %}
+            {% if clientes.number > 4 %}
+                <li class="page-item">
+                <span class="page-link">....</span>
+                </li>
+            {% endif %}
+          </li>
+
+          {% for i in clientes.paginator.page_range %}
+            {% if clientes.number == i %}
+              <li class="page-item active">
+                <span class="page-link">
+                  {{ i }}
+                  <span class="sr-only"></span>
+                </span>
+              </li>
+              {% elif i > clientes.number|add:'-3' and i < clientes.number|add:'3' %}
+                <li class="page-item">
+                  <a class="page-link" href="{{ request.path }}?page={{ i }}">{{ i }}</a>
+                </li>
+            {% endif %}
+          {% endfor %}
+
+          {% if clientess.has_next %}
+            {% if clientes.number < clientes.paginator.num_pages|add:'-3' %}
+                <li class="page-item">
+                    <span class="page-link">....</span>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ clientes.paginator.num_pages }}">{{ clientes.paginator.num_pages }}</a>
+                </li>
+            {% elif clientes.number < clientes.paginator.num_pages|add:'-2' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ clientes.paginator.num_pages }}">{{ clientes.paginator.num_pages }}</a>
+                </li>
+            {% endif %}  
+            <li class="page-item">
+              <a class="page-link" href="?page={{ clientes.next_page_number }}"> ⇉</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+      <!-- pagination end -->
+  </div>
+</div>
+
+{% endblock %}

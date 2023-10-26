@@ -1,0 +1,25 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Reporte de clientes pdf</title>
+    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  
+  <body>
+    <p class="head">
+      <h4>ISSM</h4>
+      <img src="{{ logo }}" class="img-reporte" >
+    </p>
+    {% for cliente in reporte %}
+    <p>
+      <b>Dni:</b> {{cliente.dni}}<br>
+      <b>Nombre:</b> {{cliente.nombre}}<br>
+      <b>Apellido:</b> {{cliente.apellido}}<br>
+      <b>Vive:</b> {{cliente.rubro}}<br>
+    </p>
+    {% endfor %}
+  </body>
+</html>

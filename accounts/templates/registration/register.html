@@ -1,0 +1,15 @@
+{%extends 'base.html'%}
+
+{%block title%}
+Registro de usuario
+{%endblock%}
+
+
+{%block content%}
+<form action=''  method='POST'>
+    {% csrf_token %}
+    {{formUser}}
+    <button type='sumbit' id='sumbit'>Registrase</button>
+</form>
+
+{%endblock%}

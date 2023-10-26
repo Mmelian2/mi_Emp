@@ -1,0 +1,20 @@
+{%extends 'base.html'%}
+{%block title%}
+Editar Empresa
+{%endblock%}
+
+{%block content%}
+<div class="card text-bg-secondary mb-3 shadow-lg p-3 mb-5 bg-body-tertiary rounded mx-auto p-2" style=" max-width: 30rem;" >
+    <div class="card-header">
+        <a type="button" class="btn-close btn-close-white" aria-label="Close" href="{%url 'lista_clientes'%}"></a>
+        <h3>Editar Empresa</h3>
+    </div>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table align="center"> 
+            {{formEmpresa.as_table}}
+        </table>
+        <button type="sumbit" class="btn btn-primary" align="center">Guardar</button>
+    </form>
+</div>
+{%endblock%}

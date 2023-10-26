@@ -1,0 +1,57 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block title%}
+{%endblock%}
+
+{%block content%}
+<div class="p-3 mb-2 bg-secondary text-white">
+    <table class="table table-dark table-hover table-bordered border-primary">
+        <thead>
+            <th>
+            <h3>Empresa</h3>
+            </th>
+            <th>   </th>
+          </thead>
+          <tbody>
+            <tr>
+                <td>Logo</td>
+                <td VALIGN="middle">
+                    {% if clien.foto %}
+                    <div class="row-picture">
+                        <img class="img-thumbnail" src="{{clien.foto.url}}" alt="icon" width="100" height="100">
+                        <br>
+                    </div>
+                    {%else%}
+                    <div class="row-picture">
+                        <img class="img-thumbnail" src="/media/imagenes/avatar.png" alt="icon" width="50" height="50">
+                        <br>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td scope="col">Epresa:</td>
+                <td >{{empr.nombre}}</td>
+            </tr>
+            <tr>
+                <td scope="col">CUIT: </td>
+                <td>{{empr.cuit}}</td>
+                
+            </tr>
+            <tr>
+                <td scope="col">País</td>
+                <td>{{empr.pais}}</td>
+                
+            </tr>
+            <tr>
+                <td scope="col">Provincia</td>
+                <td >{{empr.prov}}</td>
+            </tr>
+            <tr>
+                <td scope="col">Email</td>
+              <td>{{empr.email}}</td>
+            </tr>
+          </tbody>
+    </table>
+</div>
+{%endblock%}

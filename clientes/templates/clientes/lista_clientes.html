@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{%load static%}
+{% block title%}
+  Listado de clientes
+{%endblock title%}
+
+{%block content%}
+<div class="p-3 mb-2 bg-secondary text-white">
+  <h3>Lista de Clientes</h3>  <div class="d-grid gap-2 d-md-flex justify-content-md-end ">
+    <a class='btn btn-primary btn-sm'aria-current="page" href="{% url 'cliente_nuevo'%}">Agregar</a>
+   </div><br>
+  
+  <table class="table table-dark table-bordered border-primary">
+    <thead>
+      <tr>
+        <th scope="col">Foto</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">DNI</th>
+        <th scope="col">Rubro</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+
+        {%for clien in cliente%}
+      <tr>
+        
+        <th scope="row" VALIGN="middle">
+          {% if clien.foto %}
+          <div class="row-picture">
+            <img class="img-thumbnail" src="{{clien.foto.url}}" alt="icon" width="50" height="50">
+          <br>
+          </div>
+          {%else%}
+          <div class="row-picture">
+            <img class="img-thumbnail" src="/media/imagenes/avatar.png" alt="icon" width="50" height="50">
+          <br>
+          </div>
+          {% endif %}
+        </th>
+        <td >{{clien.nombre}}</th>
+        <td>{{clien.apellido}}</td>
+        <td>{{clien.dni}}</td>
+        <td>{{clien.rubro}}</td>
+        <td>
+          <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+            <form method="POST" action="{% url 'eliminar_cliente' clien.id %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger " title="Elimación Directa de cliente">Eliminar</button>
+            </form>
+            <a type="a" class="btn btn-warning" href="{%url 'editar_cliente' clien.id%}">Editar</a>
+            <a type="a" class="btn btn-success" href="{%url 'cliente_info' clien.id%}">info</a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+  {%endblock content%}

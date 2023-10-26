@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}Listado Empresas{% endblock %}
+
+{% block content %}
+<div class="p-3 mb-2 bg-secondary text-white">
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-4">Empresas</h1>
+      <!-- It will show the total Emp count -->
+      <p class="lead">Total de Empresas - {{ Emp.paginator.count }}</p>
+    </div>
+  </div>
+  <div class="container">
+    <table class="table table-dark table-bordered border-primary">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Cuit</th>
+            <th scope="col">Pais</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for empresa in Emp %}
+                <tr>
+                    <td>{{ empresa.nombre }} </td>
+                    <td>{{ empresa.cuit }}</td>
+                    <td>{{ empresa.pais }}</td>
+                    <td>
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                          <form method="POST" action="{% url 'eliminar_emp' empresa.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger " title="Elimación Directa deEmpresa">Eliminar</button>
+                          </form>
+                          <a type="button" class="btn btn-warning" href="{%url 'editt_emp' empresa.id %}">Editar</a>
+                          <a type="button" class="btn btn-success" href="{%url 'emp_info' empresa.id%}">info</a>
+                        </div>
+                      </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- pagination starts -->
+      <nav aria-label="...">
+        <ul class="pagination flex-wrap justify-content-center">
+          <li class="page-item disabled">
+            {% if Emp.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="{{ request.path }}?page={{ Emp.previous_page_number }}">⇇</a>
+              </li>
+            {% endif %}
+            {% if Emp.number > 3 %}
+              <li class="page-item">
+                <a class="page-link" href="{{ request.path }}?page=1">1</a>
+              </li>
+            {% endif %}
+            {% if Emp.number > 4 %}
+                <li class="page-item">
+                <span class="page-link">....</span>
+                </li>
+            {% endif %}
+          </li>
+
+          {% for i in Emp.paginator.page_range %}
+            {% if Emp.number == i %}
+              <li class="page-item active">
+                <span class="page-link">
+                  {{ i }}
+                  <span class="sr-only"></span>
+                </span>
+              </li>
+              {% elif i > Emp.number|add:'-3' and i < Emp.number|add:'3' %}
+                <li class="page-item">
+                  <a class="page-link" href="{{ request.path }}?page={{ i }}">{{ i }}</a>
+                </li>
+            {% endif %}
+          {% endfor %}
+
+          {% if Emps.has_next %}
+            {% if Emp.number < Emp.paginator.num_pages|add:'-3' %}
+                <li class="page-item">
+                    <span class="page-link">....</span>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ Emp.paginator.num_pages }}">{{ Emp.paginator.num_pages }}</a>
+                </li>
+            {% elif Emp.number < Emp.paginator.num_pages|add:'-2' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ Emp.paginator.num_pages }}">{{ Emp.paginator.num_pages }}</a>
+                </li>
+            {% endif %}  
+            <li class="page-item">
+              <a class="page-link" href="?page={{ Emp.next_page_number }}"> ⇉</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+      <!-- pagination end -->
+  </div>
+</div>
+
+{% endblock %}
